@@ -50,6 +50,17 @@ int ZHex(std::string a)		// a - liczba zapisana w systemie szesnastkowym
 
 std::string DoHex(int a)		// a - liczba zapisana w systemie dziesietnym
 {
+	int pot = 1;			// pot - potega 16 z ktora mamy do czynienia
+	std::string w;
+	while (pot * 16 <= a) pot *= 16;
+	while (pot != 0)
+	{
+		if (a/pot < 10) w.push_back(a/pot + '0');
+		else w.push_back(a/pot - 10 + 'a');
+		a %= pot;
+		pot /= 16;
+	}
+	return w;
 }
 
 
@@ -57,6 +68,6 @@ std::string DoHex(int a)		// a - liczba zapisana w systemie dziesietnym
 
 int main(int argc, char** argv)
 {
-	std::cout << ZHex("3e") << '\n';
+	std::cout << DoHex(42) << '\n';
 	return 0;
 }
