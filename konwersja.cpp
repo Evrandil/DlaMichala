@@ -6,8 +6,23 @@
 std::string Konwersja(std::string a, const short& PodstawaBazowa, const short& PodstawaDocelowa)
 {
 	std::string w;
-	short reszta;				// reszta - zmienna w której będzie składana jeszcze niewykorzystana część liczby którą konwertujemy
-
+	long dcm = 0;							// zmienna na zapis liczby a w systemie dziesiętnym
+	int pot = 1;							// potęga na której jesteśmy
+	for (int k = a.size()-1; k+1 != 0; k--)
+	{
+		if (a[k] <= '9') dcm += (a[k] - '0') * pot;
+		else if (a[k] <= 'Z') dcm += (a[k] - 'A' + 10) * pot;
+		else dcm += (a[k] - 'a' + 10) * pot;
+		pot *= PodstawaBazowa;
+	} pot = 1;							// reset potęgi, od teraz to będzie potęga w liczbie docelowej
+	while (pot * PodstawaDocelowa <= dcm) pot *= 16;
+	while (pot != 0)
+	{
+		if (dcm/pot < 10) w.push_back(dcm/pot + '0');
+		else w.push_back(dcm/pot + 'a' - 10);
+		dcm %= pot;
+		pot /= PodstawaDocelowa;
+	}
 	return w;
 }
 
